@@ -27,27 +27,27 @@ features <-read.table("features.txt")
 
 # Extract the second column from the features data frame
 columnNames <- gsub("\\(\\)","",features[,2])
-columnNames  <- gsub("meanFreq","MeanFreq",columnNames )
+columnNames  <- gsub("meanFreq","MeanFrequency",columnNames )
 
 # Find the columns for Mean and STD and store it as an index; then use it to retrieve columns
 # that are required for the purpose; we also want to include the activity id and subject id columns
-ms_index <- grep("mean|std",columnNames)
-data_ms <- Data_Complete_Test_Training [,c(ms_index,562:563)]
-colnames(data_ms)[67:68] <- c("ActivityID","SubjectID")
+Index_Mean_STD <- grep("mean|std",columnNames)
+Data_Mean_STD <- Data_Complete_Test_Training [,c(Index_Mean_STD,562:563)]
+colnames(Data_Mean_STD)[67:68] <- c("ActivityID","SubjectID")
 
 # Read "activity labels" table and renames the columns
-act_lbl <- read.table("activity_labels.txt")
-colnames(act_lbl) <- c("ActivityID","ActivityName")
+ActivityLabel <- read.table("activity_labels.txt")
+colnames(ActivityLabel) <- c("ActivityID","ActivityName")
 
-#Join our data_ms with act_lbl to get the activity names, then rearrange the columns properly
-data_ms <- merge(data_ms,act_lbl,by="ActivityID",all.x=TRUE)
-data_ms <- data_ms[c(68,1,69,2:67)]
+#Join our Data_Mean_STD with ActivityLabel to get the activity names, then rearrange the columns properly
+Data_Mean_STD <- merge(Data_Mean_STD,ActivityLabel,by="ActivityID",all.x=TRUE)
+Data_Mean_STD <- Data_Mean_STD[c(68,1,69,2:67)]
 
 # Rename the mean/std dataset column names to match that of the original data source
-colnames(data_ms)[4:69] <- columnNames[ms_index] 
+colnames(Data_Mean_STD)[4:69] <- columnNames[Index_Mean_STD] 
 
 # create tidy dataset of average values for each column, group by subject and activity
-Data_Final <- aggregate(.~SubjectID+ActivityID+ActivityName,FUN=mean,data=data_ms)
+Data_Final <- aggregate(.~SubjectID+ActivityID+ActivityName,FUN=mean,data=Data_Mean_STD)
 
 # order the data by subject id and then by activity id and activity name, 
 # finally output to file as space-delimited txt, with headers included
