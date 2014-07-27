@@ -46,10 +46,10 @@ Data_Mean_STD <- Data_Mean_STD[c(68,1,69,2:67)]
 # Rename the mean/std dataset column names to match that of the original data source
 colnames(Data_Mean_STD)[4:69] <- columnNames[Index_Mean_STD] 
 
-# create tidy dataset of average values for each column, group by subject and activity
+# Create tidy dataset of average values for each column, group by subject and activity
 Data_Final <- aggregate(.~SubjectID+ActivityID+ActivityName,FUN=mean,data=Data_Mean_STD)
 
-# order the data by subject id and then by activity id and activity name, 
-# finally output to file as space-delimited txt, with headers included
+# Order the data by subject id and then by activity id and activity name, 
+# The output to file as space-delimited txt, with headers included
 Data_Final <- Data_Final[order(Data_Final$SubjectID,Data_Final$ActivityID,Data_Final$ActivityName),]
 write.table(Data_Final,"SmartPhone_Avg_Mean_Data.txt",row.names=FALSE)

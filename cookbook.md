@@ -35,7 +35,6 @@ Naming Syle
 "-std" suffix: standard deviation value
 
 ##Variable List
-
 SubjectID: The ID of the subject ranging from 1-30
 ActivityID: The ID of the activity being performed, ranging from 1-6
 ActivityName: Description of the activity recorded (6 types)
